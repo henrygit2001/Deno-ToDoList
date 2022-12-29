@@ -1,0 +1,65 @@
+<html>
+ <head>
+  <link rel="stylesheet" href="/style.css">
+  <title> Serving HTML and CSS </title> 
+ </head>
+ <body>
+<div id="header1">
+  <h1> To-Do List</h1>
+  <button class="plus-button">+</button>
+  <form id="submitData">
+    <input type="text" id="textbox" class="text-box">
+    <button type="submit" id ="submitButton" class="submit-button">Submit</button>
+  </form>
+  <span id="span"></span>
+</div>
+ </body>
+ <script>
+    let ul = document.createElement('ul');
+    let newDiv = document.createElement('div');
+    var textBox = document.querySelector('.text-box');
+    var plusButton = document.querySelector('.plus-button');
+    let sendResult = document.getElementById('span');
+    let arr;
+    async function getRequest(){
+        let response = await fetch("http://localhost:3005/items");
+        response = await response.json();
+        arr = response;
+        arr.forEach(item => {
+        let list= document.createElement('li');
+        list.textContent = item.name;
+        ul.appendChild(list);
+        });
+        let h1 = document.getElementById("header1");
+        h1.appendChild(newDiv);
+        newDiv.appendChild(ul);
+    }
+
+    getRequest();
+    plusButton.addEventListener('click', function() {
+        textBox.classList.toggle('visible');
+        if (plusButton.innerHTML == "+"){
+            plusButton.innerHTML = "-";
+        }
+        else{
+            plusButton.innerHTML = "+";
+        }
+    });
+    submitData.addEventListener('submit', function (event){
+        event.preventDefault();
+        const postRequest = {
+        method: "POST",
+        body: JSON.stringify({number: 1, name: textBox.value, important: "true"})
+        };
+        fetch("http://localhost:3005/items", postRequest)
+        .then(res => res.text())
+        .then(res => {console.log(res) ;
+            while (ul.firstChild) {
+            ul.removeChild(ul.firstChild);
+            }
+            getRequest()
+            sendResult.innerHTML = res;})
+        .catch((res)=>sendResult.innerHTML = res);
+    })
+ </script>
+</html>

@@ -1,0 +1,39 @@
+body{
+    background-color: white;
+}
+#header1 {
+    position: absolute;
+    margin-top: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+h1,
+.plus-button {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+@keyframes slideInFromLeft {
+    0% {
+      left: -200px;
+    }
+    100% {
+      left: 2px;
+    }
+  }
+  
+.text-box {
+    transform: scaleX(0);
+    opacity: 0;
+    transition: opacity .25s, transform .25s;
+    transform-origin: 0 0;
+  }
+
+.text-box.visible {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+form, span{
+  display: inline-block;
+}
